@@ -55,26 +55,37 @@
   </div>
 
   <!-- Hero -->
-  <header class="bg-primary text-white py-16 md:py-24 shadow-lg">
-    <div class="container mx-auto px-4 text-center">
-      <p class="text-secondary font-semibold uppercase tracking-widest mb-3 text-sm md:text-base">Evento Exclusivo para Profesionales del Sector</p>
+  <!-- Hero con imagen de fondo -->
+  <header
+    class="relative text-white py-16 md:py-24 shadow-lg bg-cover bg-center bg-no-repeat"
+    style="background-image: url('assets/bg-1-banner.webp');"
+  >
+    <!-- Overlay para contraste del texto -->
+    <div class="absolute inset-0 bg-[#1e3a8a]/70"></div>
+  
+    <div class="relative container mx-auto px-4 text-center">
+      <p class="text-secondary font-semibold uppercase tracking-widest mb-3 text-sm md:text-base">
+        Evento Exclusivo para Profesionales del Sector
+      </p>
       <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">
         Impulsa tu Centro: Innovación y Estrategia en Estética
       </h1>
       <p class="text-lg md:text-2xl font-light max-w-3xl mx-auto mb-8">
         Descubre la <strong>aparatología, metodología y comunicación</strong> que te permitirán liderar el futuro de la estética y la medicina estética.
       </p>
-
+  
       <div class="bg-white text-primary inline-block p-4 rounded-xl shadow-2xl font-bold text-xl md:text-2xl">
         🗓️ 3 de Noviembre | 9:30h a 14:00h
       </div>
       <p class="text-white mt-2 text-lg md:text-xl font-medium">📍 PGA Camiral Golf</p>
-
-      <a href="#formulario" class="mt-8 inline-block bg-secondary text-primary font-bold py-3 px-8 rounded-full text-lg uppercase transition duration-300 transform hover:scale-105 shadow-xl">
+  
+      <a href="#formulario"
+         class="mt-8 inline-block bg-secondary text-primary font-bold py-3 px-8 rounded-full text-lg uppercase transition duration-300 transform hover:scale-105 shadow-xl">
         ¡Reserva tu Plaza Ahora!
       </a>
     </div>
   </header>
+
 
    <!-- Ponentes -->
   <section id="ponentes" class="py-16 md:py-20 bg-white">
@@ -295,6 +306,7 @@
 
 </body>
 </html>
+
 
 
 
