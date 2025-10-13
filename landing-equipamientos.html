@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Jornada de Equipamientos | Reserva tu plaza</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Reserva tu plaza para la jornada de equipamientos con demos en vivo y especialistas. Plazas limitadas.">
+  <link rel="preconnect" href="https://n8n.bycram.dev" crossorigin>
+  <style>
+    :root{
+      --bg:#0e0f12; --card:#151821; --muted:#a7b0c0; --text:#e7ebf3; --accent:#9800cb; --accent-2:#7b00a4; --ok:#22c55e; --error:#ef4444;
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:radial-gradient(1200px 600px at 80% -10%,#241b2c 0%,transparent 60%),var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    header{display:flex;gap:20px;align-items:center;justify-content:space-between;padding:24px 0}
+    .logo{display:flex;align-items:center;gap:12px;font-weight:700;font-size:18px;letter-spacing:.2px}
+    .badge{padding:6px 10px;border:1px solid #2a2f3b;border-radius:999px;color:var(--muted);font-size:12px}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
+    @media (max-width:900px){.hero{grid-template-columns:1fr}}
+    .card{background:linear-gradient(180deg,#171a23, #12141b);border:1px solid #242938;border-radius:var(--radius);padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+    h1{font-size:36px;line-height:1.1;margin:0 0 10px}
+    p.lead{margin:0 0 18px;color:var(--muted)}
+    .kpis{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0 0}
+    .kpi{background:#12141b;border:1px solid #262b39;border-radius:12px;padding:10px 12px;color:#c8d0df;font-size:13px}
+    form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media (max-width:700px){form{grid-template-columns:1fr}}
+    label{font-size:13px;color:#cbd3e3}
+    input,button{font:inherit}
+    .field{display:flex;flex-direction:column;gap:8px}
+    .input{background:#0f1117;border:1px solid #2a2f3b;border-radius:12px;padding:12px 14px;color:var(--text);outline:none}
+    .input:focus{border-color:#3a4060;box-shadow:0 0 0 3px rgba(152,0,203,.15)}
+    .full{grid-column:1 / -1}
+    .row{display:flex;gap:12px;align-items:center}
+    .muted{color:var(--muted);font-size:12px}
+    .hp{position:absolute !important; left:-9999px !important; opacity:0 !important; height:0 !important; width:0 !important}
+    .btn{appearance:none;border:0;border-radius:12px;padding:12px 16px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;cursor:pointer;font-weight:600}
+    .btn:disabled{opacity:.6;cursor:not-allowed}
+    .btn-sec{background:#0f1117;border:1px solid #2a2f3b;color:#d2d7e6}
+    .alert{border-radius:12px;padding:12px 14px;font-size:14px}
+    .alert-ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.4);color:#9be7b6}
+    .alert-err{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.35);color:#f2b0b0}
+    footer{margin:40px 0 10px;color:#8f98aa;font-size:12px;text-align:center}
+    /* Modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;place-items:center;z-index:50}
+    .modal{width:min(560px,92vw);background:#0f1117;border:1px solid #2a2f3b;border-radius:18px;padding:20px;box-shadow:0 30px 80px rgba(0,0,0,.45);text-align:center}
+    .modal h2{margin:6px 0 6px}
+    .modal p{color:#c4ccdb}
+    .modal .ok{font-size:42px;line-height:1}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 12a8 8 0 1 1 16 0" stroke="url(#g)" stroke-width="2" stroke-linecap="round"/>
+          <path d="M12 4v16" stroke="#fff" stroke-opacity=".85" stroke-width="2" stroke-linecap="round"/>
+          <defs><linearGradient id="g" x1="4" x2="20" y1="12" y2="12" gradientUnits="userSpaceOnUse"><stop stop-color="#9800cb"/><stop offset="1" stop-color="#7b00a4"/></linearGradient></defs>
+        </svg>
+        Jornada de Equipamientos
+      </div>
+      <div class="badge">Plazas limitadas</div>
+    </header>
+
+    <section class="hero">
+      <div class="card">
+        <h1>Demostraciones en vivo con especialistas</h1>
+        <p class="lead">Reserva tu plaza para la jornada técnica. Agenda, demos y networking. Confirmación inmediata por correo.</p>
+        <div class="kpis">
+          <div class="kpi">📍 PGA Camiral Golf</div>
+          <div class="kpi">🗓️ 3 de noviembre · 9:30h</div>
+          <div class="kpi">☕ Café y materiales</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <form id="registration-form" novalidate>
+          <!-- honeypot anti-spam -->
+          <input type="text" id="hp" name="hp" class="hp" tabindex="-1" autocomplete="off">
+
+          <div class="field">
+            <label for="nombre_completo">Nombre y apellidos *</label>
+            <input class="input" id="nombre_completo" name="nombre" type="text" required autocomplete="name" maxlength="120" placeholder="Tu nombre">
+          </div>
+
+          <div class="field">
+            <label for="nombre_centro">Centro / Empresa *</label>
+            <input class="input" id="nombre_centro" name="centro" type="text" required maxlength="160" placeholder="Nombre del centro">
+          </div>
+
+          <div class="field">
+            <label for="email">Email *</label>
+            <input class="input" id="email" name="email" type="email" required autocomplete="email" placeholder="tu@correo.com">
+          </div>
+
+          <div class="field">
+            <label for="telefono">Teléfono *</label>
+            <input class="input" id="telefono" name="telefono" type="tel" required inputmode="tel" pattern="[0-9+()\-.\s]{6,}" placeholder="+34 600 000 000">
+          </div>
+
+          <div class="field full row">
+            <input type="checkbox" id="privacidad" required>
+            <label for="privacidad" class="muted">Acepto la <a href="/politica-privacidad" target="_blank" rel="noopener">política de privacidad</a> *</label>
+          </div>
+
+          <div id="form-alert" class="alert alert-err full" style="display:none"></div>
+
+          <div class="full row" style="justify-content:flex-end;gap:10px">
+            <button type="button" class="btn btn-sec" id="btn-reset">Limpiar</button>
+            <button type="submit" class="btn" id="btn-submit">Reservar plaza</button>
+          </div>
+
+          <p class="muted full">Al enviar, recibirás un correo con la confirmación y próximos pasos.</p>
+        </form>
+      </div>
+    </section>
+
+    <footer>© <span id="year"></span> Jornada de Equipamientos</footer>
+  </div>
+
+  <!-- Modal de éxito -->
+  <div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal" role="document">
+      <div class="ok">✅</div>
+      <h2>¡Reserva confirmada!</h2>
+      <p>Te hemos enviado un correo con los detalles. Revisa tu bandeja de entrada (y spam si no lo ves).</p>
+      <div style="margin-top:14px">
+        <button class="btn" id="modal-close">Aceptar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- utilidades ----------
+    const $ = (sel) => document.querySelector(sel);
+
+    function showAlert(msg){
+      const a = $('#form-alert');
+      a.textContent = msg || 'No se pudo enviar. Inténtalo de nuevo.';
+      a.className = 'alert alert-err full';
+      a.style.display = 'block';
+    }
+    function clearAlert(){
+      const a = $('#form-alert');
+      a.style.display = 'none';
+      a.textContent = '';
+    }
+    function showModal(){
+      const bd = $('#modal-backdrop');
+      bd.style.display = 'grid';
+      bd.setAttribute('aria-hidden','false');
+    }
+    function hideModal(){
+      const bd = $('#modal-backdrop');
+      bd.style.display = 'none';
+      bd.setAttribute('aria-hidden','true');
+    }
+    function getUTM(name){
+      return new URLSearchParams(location.search).get(name) || '';
+    }
+
+    // ---------- envío al webhook de n8n ----------
+    const N8N_WEBHOOK = 'https://n8n.bycram.dev/webhook/lead-equipamientos';
+
+    async function postLead(payload){
+      const res = await fetch(N8N_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json' },
+        body: JSON.stringify(payload),
+        credentials: 'omit',
+        cache: 'no-store',
+        mode: 'cors'
+      });
+      if(!res.ok){
+        let t = '';
+        try { t = await res.text(); } catch(e){}
+        throw new Error('HTTP '+res.status+': '+t);
+      }
+      // Se espera { ok: true }
+      return res.json().catch(()=>({ ok:true }));
+    }
+
+    // ---------- listeners ----------
+    window.addEventListener('DOMContentLoaded', () => {
+      // año footer
+      $('#year').textContent = new Date().getFullYear();
+
+      // cierre modal
+      $('#modal-close').addEventListener('click', hideModal);
+      $('#modal-backdrop').addEventListener('click', (e)=>{ if(e.target.id==='modal-backdrop') hideModal(); });
+
+      // reset
+      $('#btn-reset').addEventListener('click', () => {
+        $('#registration-form').reset();
+        clearAlert();
+      });
+
+      // submit
+      $('#registration-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearAlert();
+
+        const hp = $('#hp')?.value || '';
+        if (hp) return; // honeypot => no enviar
+
+        const nombre   = $('#nombre_completo')?.value?.trim() || '';
+        const centro   = $('#nombre_centro')?.value?.trim() || '';
+        const email    = $('#email')?.value?.trim() || '';
+        const telefono = $('#telefono')?.value?.trim() || '';
+        const privOK   = $('#privacidad')?.checked || false;
+
+        if(!nombre || !centro || !email || !telefono){
+          showAlert('Revisa los campos obligatorios.');
+          return;
+        }
+        if(!privOK){
+          showAlert('Debes aceptar la política de privacidad.');
+          return;
+        }
+        if(!email.includes('@')){
+          showAlert('Introduce un email válido.');
+          return;
+        }
+
+        const btn = $('#btn-submit');
+        btn.disabled = true;
+        btn.textContent = 'Enviando…';
+
+        const payload = {
+          nombre, centro, email, telefono,
+          utm_source: getUTM('utm_source'),
+          utm_campaign: getUTM('utm_campaign'),
+          origen: 'landing-equipamientos',
+          hp
+        };
+
+        try{
+          const res = await postLead(payload);
+          if(res && res.ok){
+            $('#registration-form').reset();
+            showModal();
+          }else{
+            showAlert('No se pudo enviar el formulario. Inténtalo de nuevo.');
+          }
+        }catch(err){
+          console.error(err);
+          showAlert('No se pudo enviar el formulario. Inténtalo en unos minutos.');
+        }finally{
+          btn.disabled = false;
+          btn.textContent = 'Reservar plaza';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
