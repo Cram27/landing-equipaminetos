@@ -1,259 +1,306 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <title>Jornada de Equipamientos | Reserva tu plaza</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Reserva tu plaza para la jornada de equipamientos con demos en vivo y especialistas. Plazas limitadas.">
-  <link rel="preconnect" href="https://n8n.bycram.dev" crossorigin>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Innovación y Estrategia en Estética - Equipamientos Estéticos</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
   <style>
     :root{
-      --bg:#0e0f12; --card:#151821; --muted:#a7b0c0; --text:#e7ebf3; --accent:#9800cb; --accent-2:#7b00a4; --ok:#22c55e; --error:#ef4444;
-      --radius:16px;
+      --color-primary:#1e3a8a;/* Dark Blue */
+      --color-secondary:#fcd34d;/* Amber/Gold */
+      --color-accent:#34d399;/* Emerald */
+      --color-bg:#f9fafb;/* Light Gray */
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;background:radial-gradient(1200px 600px at 80% -10%,#241b2c 0%,transparent 60%),var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
-    .wrap{max-width:1100px;margin:0 auto;padding:24px}
-    header{display:flex;gap:20px;align-items:center;justify-content:space-between;padding:24px 0}
-    .logo{display:flex;align-items:center;gap:12px;font-weight:700;font-size:18px;letter-spacing:.2px}
-    .badge{padding:6px 10px;border:1px solid #2a2f3b;border-radius:999px;color:var(--muted);font-size:12px}
-    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
-    @media (max-width:900px){.hero{grid-template-columns:1fr}}
-    .card{background:linear-gradient(180deg,#171a23, #12141b);border:1px solid #242938;border-radius:var(--radius);padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
-    h1{font-size:36px;line-height:1.1;margin:0 0 10px}
-    p.lead{margin:0 0 18px;color:var(--muted)}
-    .kpis{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0 0}
-    .kpi{background:#12141b;border:1px solid #262b39;border-radius:12px;padding:10px 12px;color:#c8d0df;font-size:13px}
-    form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    @media (max-width:700px){form{grid-template-columns:1fr}}
-    label{font-size:13px;color:#cbd3e3}
-    input,button{font:inherit}
-    .field{display:flex;flex-direction:column;gap:8px}
-    .input{background:#0f1117;border:1px solid #2a2f3b;border-radius:12px;padding:12px 14px;color:var(--text);outline:none}
-    .input:focus{border-color:#3a4060;box-shadow:0 0 0 3px rgba(152,0,203,.15)}
-    .full{grid-column:1 / -1}
-    .row{display:flex;gap:12px;align-items:center}
-    .muted{color:var(--muted);font-size:12px}
-    .hp{position:absolute !important; left:-9999px !important; opacity:0 !important; height:0 !important; width:0 !important}
-    .btn{appearance:none;border:0;border-radius:12px;padding:12px 16px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;cursor:pointer;font-weight:600}
-    .btn:disabled{opacity:.6;cursor:not-allowed}
-    .btn-sec{background:#0f1117;border:1px solid #2a2f3b;color:#d2d7e6}
-    .alert{border-radius:12px;padding:12px 14px;font-size:14px}
-    .alert-ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.4);color:#9be7b6}
-    .alert-err{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.35);color:#f2b0b0}
-    footer{margin:40px 0 10px;color:#8f98aa;font-size:12px;text-align:center}
-    /* Modal */
-    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;place-items:center;z-index:50}
-    .modal{width:min(560px,92vw);background:#0f1117;border:1px solid #2a2f3b;border-radius:18px;padding:20px;box-shadow:0 30px 80px rgba(0,0,0,.45);text-align:center}
-    .modal h2{margin:6px 0 6px}
-    .modal p{color:#c4ccdb}
-    .modal .ok{font-size:42px;line-height:1}
+    body{font-family:'Inter',sans-serif;background-color:var(--color-bg);}
+    .text-primary{color:var(--color-primary);}
+    .bg-primary{background-color:var(--color-primary);}
+    .text-secondary{color:var(--color-secondary);}
+    .bg-secondary{background-color:var(--color-secondary);}
+    .ring-secondary{--tw-ring-color:var(--color-secondary);}
+    .hover-lift:hover{transform:translateY(-4px);box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05);}
   </style>
 </head>
-<body>
-  <div class="wrap">
-    <header>
-      <div class="logo">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M4 12a8 8 0 1 1 16 0" stroke="url(#g)" stroke-width="2" stroke-linecap="round"/>
-          <path d="M12 4v16" stroke="#fff" stroke-opacity=".85" stroke-width="2" stroke-linecap="round"/>
-          <defs><linearGradient id="g" x1="4" x2="20" y1="12" y2="12" gradientUnits="userSpaceOnUse"><stop stop-color="#9800cb"/><stop offset="1" stop-color="#7b00a4"/></linearGradient></defs>
-        </svg>
-        Jornada de Equipamientos
-      </div>
-      <div class="badge">Plazas limitadas</div>
-    </header>
-
-    <section class="hero">
-      <div class="card">
-        <h1>Demostraciones en vivo con especialistas</h1>
-        <p class="lead">Reserva tu plaza para la jornada técnica. Agenda, demos y networking. Confirmación inmediata por correo.</p>
-        <div class="kpis">
-          <div class="kpi">📍 PGA Camiral Golf</div>
-          <div class="kpi">🗓️ 3 de noviembre · 9:30h</div>
-          <div class="kpi">☕ Café y materiales</div>
-        </div>
-      </div>
-
-      <div class="card">
-        <form id="registration-form" novalidate>
-          <!-- honeypot anti-spam -->
-          <input type="text" id="hp" name="hp" class="hp" tabindex="-1" autocomplete="off">
-
-          <div class="field">
-            <label for="nombre_completo">Nombre y apellidos *</label>
-            <input class="input" id="nombre_completo" name="nombre" type="text" required autocomplete="name" maxlength="120" placeholder="Tu nombre">
-          </div>
-
-          <div class="field">
-            <label for="nombre_centro">Centro / Empresa *</label>
-            <input class="input" id="nombre_centro" name="centro" type="text" required maxlength="160" placeholder="Nombre del centro">
-          </div>
-
-          <div class="field">
-            <label for="email">Email *</label>
-            <input class="input" id="email" name="email" type="email" required autocomplete="email" placeholder="tu@correo.com">
-          </div>
-
-          <div class="field">
-            <label for="telefono">Teléfono *</label>
-            <input class="input" id="telefono" name="telefono" type="tel" required inputmode="tel" pattern="[0-9+()\-.\s]{6,}" placeholder="+34 600 000 000">
-          </div>
-
-          <div class="field full row">
-            <input type="checkbox" id="privacidad" required>
-            <label for="privacidad" class="muted">Acepto la <a href="/politica-privacidad" target="_blank" rel="noopener">política de privacidad</a> *</label>
-          </div>
-
-          <div id="form-alert" class="alert alert-err full" style="display:none"></div>
-
-          <div class="full row" style="justify-content:flex-end;gap:10px">
-            <button type="button" class="btn btn-sec" id="btn-reset">Limpiar</button>
-            <button type="submit" class="btn" id="btn-submit">Reservar plaza</button>
-          </div>
-
-          <p class="muted full">Al enviar, recibirás un correo con la confirmación y próximos pasos.</p>
-        </form>
-      </div>
-    </section>
-
-    <footer>© <span id="year"></span> Jornada de Equipamientos</footer>
-  </div>
+<body class="antialiased">
 
   <!-- Modal de éxito -->
-  <div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal" role="document">
-      <div class="ok">✅</div>
-      <h2>¡Reserva confirmada!</h2>
-      <p>Te hemos enviado un correo con los detalles. Revisa tu bandeja de entrada (y spam si no lo ves).</p>
-      <div style="margin-top:14px">
-        <button class="btn" id="modal-close">Aceptar</button>
+  <div id="success-modal" class="fixed inset-0 bg-gray-900 bg-opacity-75 hidden flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-xl p-8 max-w-sm w-full shadow-2xl transform transition-all duration-300 scale-95">
+      <div class="text-center">
+        <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+          <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        </div>
+        <h3 class="mt-4 text-xl font-bold text-gray-900">¡Registro Confirmado!</h3>
+        <div class="mt-2">
+          <p class="text-sm text-gray-500">Hemos recibido tu solicitud de asistencia. Recibirás un correo de confirmación con los detalles del evento.</p>
+        </div>
+        <div class="mt-4">
+          <button type="button" onclick="closeModal()" class="w-full inline-flex justify-center rounded-lg border border-transparent px-4 py-2 bg-primary text-base font-medium text-white shadow-sm hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:text-sm transition duration-150">
+            Entendido
+          </button>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- Modal de error -->
+  <div id="error-toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+    <div class="bg-red-600 text-white px-4 py-3 rounded-lg shadow-lg">
+      <span id="error-text" class="font-medium">Ha ocurrido un error al enviar el formulario.</span>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <header class="bg-primary text-white py-16 md:py-24 shadow-lg">
+    <div class="container mx-auto px-4 text-center">
+      <p class="text-secondary font-semibold uppercase tracking-widest mb-3 text-sm md:text-base">Evento Exclusivo para Profesionales del Sector</p>
+      <h1 class="text-4xl md:text-6xl font-extrabold mb-4 leading-tight">
+        Impulsa tu Centro: Innovación y Estrategia en Estética
+      </h1>
+      <p class="text-lg md:text-2xl font-light max-w-3xl mx-auto mb-8">
+        Descubre la <strong>aparatología, metodología y comunicación</strong> que te permitirán liderar el futuro de la estética y la medicina estética.
+      </p>
+
+      <div class="bg-white text-primary inline-block p-4 rounded-xl shadow-2xl font-bold text-xl md:text-2xl">
+        🗓️ 3 de Noviembre | 9:30h a 14:00h
+      </div>
+      <p class="text-white mt-2 text-lg md:text-xl font-medium">📍 PGA Camiral Golf</p>
+
+      <a href="#formulario" class="mt-8 inline-block bg-secondary text-primary font-bold py-3 px-8 rounded-full text-lg uppercase transition duration-300 transform hover:scale-105 shadow-xl">
+        ¡Reserva tu Plaza Ahora!
+      </a>
+    </div>
+  </header>
+
+  <!-- Ponentes -->
+  <section id="ponentes" class="py-16 md:py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-primary mb-12">Nuestros Expertos en la Jornada</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+        <div class="p-6 bg-gray-50 rounded-xl shadow-lg text-center hover-lift transition duration-300">
+          <div class="w-24 h-24 mx-auto rounded-full bg-primary mb-4 flex items-center justify-center text-3xl font-bold text-white border-4 border-secondary">JF</div>
+          <h3 class="text-xl font-bold text-gray-800">Judith Fiblà</h3>
+          <p class="text-secondary font-semibold mb-3">Organizadora y CEO</p>
+          <p class="text-gray-600 text-sm">Organizadora del evento y CEO de equipamientos estéticos, impulsora de la innovación tecnológica en el sector.</p>
+        </div>
+
+        <div class="p-6 bg-gray-50 rounded-xl shadow-lg text-center hover-lift transition duration-300">
+          <div class="w-24 h-24 mx-auto rounded-full bg-primary mb-4 flex items-center justify-center text-3xl font-bold text-white border-4 border-secondary">ST</div>
+          <h3 class="text-xl font-bold text-gray-800">Dra. Silvia Tutusaus</h3>
+          <p class="text-secondary font-semibold mb-3">Experta en Medicina Estética</p>
+          <p class="text-gray-600 text-sm">Médica experta que compartirá las últimas tendencias y la integración de tratamientos estéticos y médicos.</p>
+        </div>
+
+        <div class="p-6 bg-gray-50 rounded-xl shadow-lg text-center hover-lift transition duration-300">
+          <div class="w-24 h-24 mx-auto rounded-full bg-primary mb-4 flex items-center justify-center text-3xl font-bold text-white border-4 border-secondary">YL</div>
+          <h3 class="text-xl font-bold text-gray-800">Yvone López</h3>
+          <p class="text-secondary font-semibold mb-3">Coach y Mentora de Centros</p>
+          <p class="text-gray-600 text-sm">Especialista en mentoría y gestión, te dará las claves para optimizar la rentabilidad y el flujo de trabajo de tu negocio.</p>
+        </div>
+
+        <div class="p-6 bg-gray-50 rounded-xl shadow-lg text-center hover-lift transition duration-300">
+          <div class="w-24 h-24 mx-auto rounded-full bg-primary mb-4 flex items-center justify-center text-3xl font-bold text-white border-4 border-secondary">AI</div>
+          <h3 class="text-xl font-bold text-gray-800">Adrián Izquierdo</h3>
+          <p class="text-secondary font-semibold mb-3">Estratega Visual y Creativo</p>
+          <p class="text-gray-600 text-sm">Te enseñará a comunicarte y a mostrar tu centro de forma magnética para conectar genuinamente con tus clientas.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Razones -->
+  <section id="razones" class="py-16 md:py-20 bg-primary text-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-secondary">5 Motivos Ineludibles para Asistir</h2>
+
+      <div class="max-w-4xl mx-auto space-y-6">
+
+        <div class="flex items-start bg-blue-900/50 p-4 rounded-xl shadow-lg">
+          <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-secondary text-primary font-bold text-lg mr-4">1</div>
+          <div>
+            <h3 class="font-bold text-xl mb-1">Innovación en Aparatología</h3>
+            <p class="text-blue-200">Descubre y prueba en directo la <strong>aparatología de última generación</strong> que definirá los tratamientos del próximo año.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start bg-blue-900/50 p-4 rounded-xl shadow-lg">
+          <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-secondary text-primary font-bold text-lg mr-4">2</div>
+          <div>
+            <h3 class="font-bold text-xl mb-1">Metodología Comprobada</h3>
+            <p class="text-blue-200">Aprende <strong>metodologías de trabajo</strong> probadas y eficientes para optimizar la rentabilidad y la gestión diaria de tu clínica.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start bg-blue-900/50 p-4 rounded-xl shadow-lg">
+          <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-secondary text-primary font-bold text-lg mr-4">3</div>
+          <div>
+            <h3 class="font-bold text-xl mb-1">Estrategia Visual Magnética</h3>
+            <p class="text-blue-200">Desarrolla tu <strong>Estrategia Visual y Personal Branding</strong> para atraer a tu cliente ideal y diferenciarte de la competencia.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start bg-blue-900/50 p-4 rounded-xl shadow-lg">
+          <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-secondary text-primary font-bold text-lg mr-4">4</div>
+          <div>
+            <h3 class="font-bold text-xl mb-1">Sinergia Estética-Médica</h3>
+            <p class="text-blue-200">Domina las claves de la <strong>Medicina Estética</strong> y cómo crear sinergias de tratamientos para resultados superiores.</p>
+          </div>
+        </div>
+
+        <div class="flex items-start bg-blue-900/50 p-4 rounded-xl shadow-lg">
+          <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-secondary text-primary font-bold text-lg mr-4">5</div>
+          <div>
+            <h3 class="font-bold text-xl mb-1">Networking de Alto Nivel</h3>
+            <p class="text-blue-200">Conéctate y haz <strong>networking</strong> con líderes, ponentes de prestigio y profesionales de alto nivel del sector.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Formulario -->
+  <section id="formulario" class="py-16 md:py-20 bg-gray-50">
+    <div class="container mx-auto px-4 max-w-lg">
+      <h2 class="text-3xl md:text-4xl font-bold text-center text-primary mb-4">Reserva tu Asistencia</h2>
+      <p class="text-center text-gray-600 mb-8">¡Las plazas son limitadas! Asegura tu lugar en este evento transformador.</p>
+
+      <!-- IMPORTANTE: añade tu webhook de n8n en el JS, no aquí -->
+      <form id="registration-form" class="bg-white p-8 md:p-10 rounded-xl shadow-2xl space-y-6 border border-gray-200" novalidate>
+        <!-- Honeypot anti-spam -->
+        <input type="text" id="company_website" name="company_website" class="hidden" tabindex="-1" autocomplete="off"/>
+
+        <div>
+          <label for="nombre_completo" class="block text-sm font-medium text-gray-700 mb-1">Nombre y Apellidos <span class="text-red-500">*</span></label>
+          <input type="text" id="nombre_completo" name="nombre_completo" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150">
+        </div>
+
+        <div>
+          <label for="nombre_centro" class="block text-sm font-medium text-gray-700 mb-1">Nombre del Centro o Clínica Estética <span class="text-red-500">*</span></label>
+          <input type="text" id="nombre_centro" name="nombre_centro" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150">
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico <span class="text-red-500">*</span></label>
+          <input type="email" id="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150">
+        </div>
+
+        <div>
+          <label for="telefono" class="block text-sm font-medium text-gray-700 mb-1">Teléfono de Contacto <span class="text-red-500">*</span></label>
+          <input type="tel" id="telefono" name="telefono" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition duration-150">
+        </div>
+
+        <button id="submit-btn" type="submit" class="w-full bg-secondary text-primary font-bold py-3 rounded-lg text-lg uppercase transition duration-300 transform hover:bg-yellow-400 focus:outline-none focus:ring-4 ring-secondary ring-opacity-50">
+          Confirmar Asistencia
+        </button>
+
+        <p class="text-xs text-gray-500 text-center mt-4">Al enviar este formulario, aceptas que nos pongamos en contacto contigo para los detalles del evento.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-8">
+    <div class="container mx-auto px-4 text-center">
+      <p class="mb-2 text-sm md:text-base">Evento organizado por <strong>Equipamientos Estéticos</strong></p>
+      <p class="text-xs text-gray-400">Jornada de Innovación y Estrategia | 3 de Noviembre 2024 | PGA Camiral Golf</p>
+      <p class="mt-4 text-xs">© 2024 Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
   <script>
-    // ---------- utilidades ----------
-    const $ = (sel) => document.querySelector(sel);
+    // ==== CONFIGURA AQUÍ TU WEBHOOK DE N8N ====
+    // Ejemplo: const N8N_WEBHOOK_URL = "https://n8n.bycram.dev/webhook/abcd1234";
+    const N8N_WEBHOOK_URL = "https://TU-DOMINIO-DE-N8N.TLD/webhook/TU_WEBHOOK_ID";
 
-    function showAlert(msg){
-      const a = $('#form-alert');
-      a.textContent = msg || 'No se pudo enviar. Inténtalo de nuevo.';
-      a.className = 'alert alert-err full';
-      a.style.display = 'block';
-    }
-    function clearAlert(){
-      const a = $('#form-alert');
-      a.style.display = 'none';
-      a.textContent = '';
-    }
+    // UI helpers
     function showModal(){
-      const bd = $('#modal-backdrop');
-      bd.style.display = 'grid';
-      bd.setAttribute('aria-hidden','false');
+      const modal=document.getElementById('success-modal');
+      modal.classList.remove('hidden'); modal.classList.add('flex');
     }
-    function hideModal(){
-      const bd = $('#modal-backdrop');
-      bd.style.display = 'none';
-      bd.setAttribute('aria-hidden','true');
+    function closeModal(){
+      const modal=document.getElementById('success-modal');
+      modal.classList.add('hidden'); modal.classList.remove('flex');
     }
-    function getUTM(name){
-      return new URLSearchParams(location.search).get(name) || '';
+    function showError(msg){
+      const toast=document.getElementById('error-toast');
+      const txt=document.getElementById('error-text');
+      if(msg) txt.textContent=msg;
+      toast.classList.remove('hidden');
+      setTimeout(()=>toast.classList.add('hidden'),4000);
     }
 
-    // ---------- envío al webhook de n8n ----------
-    const N8N_WEBHOOK = 'https://n8n.bycram.dev/webhook/lead-equipamientos';
+    // Envío a n8n
+    const form = document.getElementById('registration-form');
+    const submitBtn = document.getElementById('submit-btn');
 
-    async function postLead(payload){
-      const res = await fetch(N8N_WEBHOOK, {
-        method: 'POST',
-        headers: { 'Content-Type':'application/json' },
-        body: JSON.stringify(payload),
-        credentials: 'omit',
-        cache: 'no-store',
-        mode: 'cors'
-      });
-      if(!res.ok){
-        let t = '';
-        try { t = await res.text(); } catch(e){}
-        throw new Error('HTTP '+res.status+': '+t);
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      // Honeypot: si está relleno, cancelamos
+      if ((document.getElementById('company_website').value || "").trim() !== "") {
+        return; // Bot que rellena campos ocultos
       }
-      // Se espera { ok: true }
-      return res.json().catch(()=>({ ok:true }));
-    }
 
-    // ---------- listeners ----------
-    window.addEventListener('DOMContentLoaded', () => {
-      // año footer
-      $('#year').textContent = new Date().getFullYear();
+      // Validación nativa
+      if(!form.reportValidity()){ return; }
 
-      // cierre modal
-      $('#modal-close').addEventListener('click', hideModal);
-      $('#modal-backdrop').addEventListener('click', (e)=>{ if(e.target.id==='modal-backdrop') hideModal(); });
-
-      // reset
-      $('#btn-reset').addEventListener('click', () => {
-        $('#registration-form').reset();
-        clearAlert();
-      });
-
-      // submit
-      $('#registration-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        clearAlert();
-
-        const hp = $('#hp')?.value || '';
-        if (hp) return; // honeypot => no enviar
-
-        const nombre   = $('#nombre_completo')?.value?.trim() || '';
-        const centro   = $('#nombre_centro')?.value?.trim() || '';
-        const email    = $('#email')?.value?.trim() || '';
-        const telefono = $('#telefono')?.value?.trim() || '';
-        const privOK   = $('#privacidad')?.checked || false;
-
-        if(!nombre || !centro || !email || !telefono){
-          showAlert('Revisa los campos obligatorios.');
-          return;
+      // Armar payload
+      const payload = {
+        nombre_completo: document.getElementById('nombre_completo').value.trim(),
+        nombre_centro: document.getElementById('nombre_centro').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        telefono: document.getElementById('telefono').value.trim(),
+        meta: {
+          page_url: window.location.href,
+          user_agent: navigator.userAgent,
+          timestamp: new Date().toISOString(),
         }
-        if(!privOK){
-          showAlert('Debes aceptar la política de privacidad.');
-          return;
-        }
-        if(!email.includes('@')){
-          showAlert('Introduce un email válido.');
-          return;
+      };
+
+      // Estado UI
+      const originalText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enviando…';
+
+      try {
+        const res = await fetch(N8N_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          // Si tu webhook requiere credenciales/cookies, añade: credentials: 'include'
+        });
+
+        if(!res.ok){
+          const txt = await res.text().catch(()=> '');
+          throw new Error('Error ' + res.status + ': ' + (txt || res.statusText));
         }
 
-        const btn = $('#btn-submit');
-        btn.disabled = true;
-        btn.textContent = 'Enviando…';
+        // Success: reset y modal
+        form.reset();
+        showModal();
 
-        const payload = {
-          nombre, centro, email, telefono,
-          utm_source: getUTM('utm_source'),
-          utm_campaign: getUTM('utm_campaign'),
-          origen: 'landing-equipamientos',
-          hp
-        };
-
-        try{
-          const res = await postLead(payload);
-          if(res && res.ok){
-            $('#registration-form').reset();
-            showModal();
-          }else{
-            showAlert('No se pudo enviar el formulario. Inténtalo de nuevo.');
-          }
-        }catch(err){
-          console.error(err);
-          showAlert('No se pudo enviar el formulario. Inténtalo en unos minutos.');
-        }finally{
-          btn.disabled = false;
-          btn.textContent = 'Reservar plaza';
-        }
-      });
+      } catch (err){
+        console.error(err);
+        showError('No se pudo enviar el formulario. ' + (err?.message || ''));
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
     });
+
+    // Manejo opcional de preflight fallido (OPTIONS bloqueado)
+    // Si ves errores CORS en consola, añade en el Webhook de n8n los headers:
+    //   Access-Control-Allow-Origin: *
+    //   Access-Control-Allow-Methods: POST, OPTIONS
+    //   Access-Control-Allow-Headers: Content-Type
   </script>
 </body>
 </html>
