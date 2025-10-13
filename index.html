@@ -215,92 +215,51 @@
     </div>
   </footer>
 
-  <script>
-    // ==== CONFIGURA AQUÍ TU WEBHOOK DE N8N ====
-    // Ejemplo: const N8N_WEBHOOK_URL = "https://n8n.bycram.dev/webhook/abcd1234";
-    const N8N_WEBHOOK_URL = "https://TU-DOMINIO-DE-N8N.TLD/webhook/TU_WEBHOOK_ID";
+<script>
+  const N8N_WEBHOOK_URL = "https://n8n.bycram.dev/webhook/evento/registro"; // <-- TU URL
 
-    // UI helpers
-    function showModal(){
-      const modal=document.getElementById('success-modal');
-      modal.classList.remove('hidden'); modal.classList.add('flex');
+  function showModal(){ const m=document.getElementById('success-modal'); m.classList.remove('hidden'); m.classList.add('flex'); }
+  function closeModal(){ const m=document.getElementById('success-modal'); m.classList.add('hidden'); m.classList.remove('flex'); }
+  function showError(msg){ alert(msg || "No se pudo enviar el formulario"); }
+
+  const form = document.getElementById('registration-form');
+  const submitBtn = document.getElementById('submit-btn');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Honeypot anti-spam (si lo tienes en el HTML)
+    const bot = document.getElementById('company_website');
+    if (bot && (bot.value || "").trim() !== "") return;
+
+    // Usamos URLSearchParams => request simple (no preflight)
+    const body = new URLSearchParams();
+    body.append('nombre_completo', document.getElementById('nombre_completo').value.trim());
+    body.append('nombre_centro',   document.getElementById('nombre_centro').value.trim());
+    body.append('email',            document.getElementById('email').value.trim());
+    body.append('telefono',         document.getElementById('telefono').value.trim());
+    body.append('meta_page_url', window.location.href);
+    body.append('meta_user_agent', navigator.userAgent);
+    body.append('meta_timestamp', new Date().toISOString());
+
+    const original = submitBtn.textContent;
+    submitBtn.disabled = true; submitBtn.textContent = 'Enviando…';
+
+    try {
+      const res = await fetch(N8N_WEBHOOK_URL, { method:'POST', body });
+      // El Webhook devuelve 204; res.ok será true
+      if (!res.ok && res.status !== 204) throw new Error('Estado '+res.status);
+
+      form.reset();
+      showModal();
+    } catch (err) {
+      console.error(err); showError('Error al enviar: ' + (err?.message || ''));
+    } finally {
+      submitBtn.disabled = false; submitBtn.textContent = original;
     }
-    function closeModal(){
-      const modal=document.getElementById('success-modal');
-      modal.classList.add('hidden'); modal.classList.remove('flex');
-    }
-    function showError(msg){
-      const toast=document.getElementById('error-toast');
-      const txt=document.getElementById('error-text');
-      if(msg) txt.textContent=msg;
-      toast.classList.remove('hidden');
-      setTimeout(()=>toast.classList.add('hidden'),4000);
-    }
+  });
+</script>
 
-    // Envío a n8n
-    const form = document.getElementById('registration-form');
-    const submitBtn = document.getElementById('submit-btn');
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-
-      // Honeypot: si está relleno, cancelamos
-      if ((document.getElementById('company_website').value || "").trim() !== "") {
-        return; // Bot que rellena campos ocultos
-      }
-
-      // Validación nativa
-      if(!form.reportValidity()){ return; }
-
-      // Armar payload
-      const payload = {
-        nombre_completo: document.getElementById('nombre_completo').value.trim(),
-        nombre_centro: document.getElementById('nombre_centro').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        telefono: document.getElementById('telefono').value.trim(),
-        meta: {
-          page_url: window.location.href,
-          user_agent: navigator.userAgent,
-          timestamp: new Date().toISOString(),
-        }
-      };
-
-      // Estado UI
-      const originalText = submitBtn.textContent;
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Enviando…';
-
-      try {
-        const res = await fetch(N8N_WEBHOOK_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-          // Si tu webhook requiere credenciales/cookies, añade: credentials: 'include'
-        });
-
-        if(!res.ok){
-          const txt = await res.text().catch(()=> '');
-          throw new Error('Error ' + res.status + ': ' + (txt || res.statusText));
-        }
-
-        // Success: reset y modal
-        form.reset();
-        showModal();
-
-      } catch (err){
-        console.error(err);
-        showError('No se pudo enviar el formulario. ' + (err?.message || ''));
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-      }
-    });
-
-    // Manejo opcional de preflight fallido (OPTIONS bloqueado)
-    // Si ves errores CORS en consola, añade en el Webhook de n8n los headers:
-    //   Access-Control-Allow-Origin: *
-    //   Access-Control-Allow-Methods: POST, OPTIONS
-    //   Access-Control-Allow-Headers: Content-Type
-  </script>
 </body>
 </html>
+
