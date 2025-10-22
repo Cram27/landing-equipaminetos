@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" role="img" aria-labelledby="title desc">
+  <title id="title">Logo de Equipamientos Estética</title>
+  <desc id="desc">Dos bucles simétricos formando las iniciales E y E enlazadas.</desc>
+  <path fill="#111827" d="M40 50c0-22.091 17.909-40 40-40s40 17.909 40 40-17.909 40-40 40-40-17.909-40-40zm16 0c0 13.255 10.745 24 24 24s24-10.745 24-24-10.745-24-24-24-24 10.745-24 24z"/>
+  <path fill="#111827" d="M80 50c0-22.091 17.909-40 40-40s40 17.909 40 40-17.909 40-40 40-40-17.909-40-40zm16 0c0 13.255 10.745 24 24 24s24-10.745 24-24-10.745-24-24-24-24 10.745-24 24z"/>
+</svg>
